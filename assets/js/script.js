@@ -37,7 +37,7 @@ $(".btn-secondary").click(function(event) {
 
 function setWeather(city) {
   let queryURL =
-    "http://api.openweathermap.org/data/2.5/weather?q=" +
+    "https://api.openweathermap.org/data/2.5/weather?q=" +
     city +
     "&appid=" +
     APIKey +
@@ -46,7 +46,7 @@ function setWeather(city) {
     let lat = data.coord.lat;
     let lon = data.coord.lon;
     let queryURL2 =
-      "http://api.openweathermap.org/data/2.5/onecall?lat=" +
+      "https://api.openweathermap.org/data/2.5/onecall?lat=" +
       lat +
       "&lon=" +
       lon +
@@ -61,7 +61,7 @@ function setWeather(city) {
         $("#" + i).children("h3").text(dateFormat);
         $("#" + i)
           .children("img")
-          .attr("src", "http://openweathermap.org/img/wn/" + img + "@2x.png");
+          .attr("src", "https://openweathermap.org/img/wn/" + img + "@2x.png");
         $("#" + i).children(".temp").text("Temp: " + data.daily[i].temp.day);
         $("#" + i).children(".wind").text("Wind: " + data.daily[i].wind_speed);
         $("#" + i)
