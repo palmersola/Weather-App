@@ -42,44 +42,56 @@ function setWeather(city) {
     "&appid=" +
     APIKey +
     "&units=imperial";
-  fetch(queryURL).then(response => response.json()).then(data => {
-    let lat = data.coord.lat;
-    let lon = data.coord.lon;
-    let queryURL2 =
-      "https://api.openweathermap.org/data/2.5/onecall?lat=" +
-      lat +
-      "&lon=" +
-      lon +
-      "&appid=" +
-      APIKey +
-      "&units=imperial&exclude=hourly,minutely";
-    fetch(queryURL2).then(response => response.json()).then(data => {
-      for (i = 0; i <= 5; i++) {
-        let date = new Date(data.daily[i].dt * 1000);
-        let dateFormat = date.toLocaleDateString();
-        let img = data.daily[i].weather[0].icon;
-        $("#" + i).children("h3").text(dateFormat);
-        $("#" + i)
-          .children("img")
-          .attr("src", "https://openweathermap.org/img/wn/" + img + "@2x.png");
-        $("#" + i).children(".temp").text("Temp: " + data.daily[i].temp.day);
-        $("#" + i).children(".wind").text("Wind: " + data.daily[i].wind_speed);
-        $("#" + i)
-          .children(".humidity")
-          .text("Humidity: " + data.daily[i].humidity + "%");
-        if (i === 0) {
-          $("#0").children("h2").text(city + " " + dateFormat);
-          $("#0").children(".UV").text("UV Index: " + data.daily[0].uvi);
+  fetch(queryURL)
+    .then(response => response.json())
+    .then(data => {
+      let lat = data.coord.lat;
+      let lon = data.coord.lon;
+      let queryURL2 =
+        "https://api.openweathermap.org/data/2.5/onecall?lat=" +
+        lat +
+        "&lon=" +
+        lon +
+        "&appid=" +
+        APIKey +
+        "&units=imperial&exclude=hourly,minutely";
+      fetch(queryURL2).then(response => response.json()).then(data => {
+        for (i = 0; i <= 5; i++) {
+          let date = new Date(data.daily[i].dt * 1000);
+          let dateFormat = date.toLocaleDateString();
+          let img = data.daily[i].weather[0].icon;
+          $("#" + i).children("h3").text(dateFormat);
+          $("#" + i)
+            .children("img")
+            .attr(
+              "src",
+              "https://openweathermap.org/img/wn/" + img + "@2x.png"
+            );
+          $("#" + i).children(".temp").text("Temp: " + data.daily[i].temp.day);
+          $("#" + i)
+            .children(".wind")
+            .text("Wind: " + data.daily[i].wind_speed);
+          $("#" + i)
+            .children(".humidity")
+            .text("Humidity: " + data.daily[i].humidity + "%");
+          if (i === 0) {
+            $("#0").children("h2").text(city + " " + dateFormat);
+            $("#0").children(".UV").text("UV Index: " + data.daily[0].uvi);
+          }
+          if (data.daily[0].uvi <= 4) {
+            $("#0").children(".UV").css("background-color", "green");
+          } else if (data.daily[0].uvi <= 8) {
+            $("#0").children(".UV").css("background-color", "yellow");
+          } else if (data.daily[0].uvi > 8) {
+            $("#0").children(".UV").css("background-color", "red");
+          }
         }
-        if (data.daily[0].uvi <= 4) {
-          $("#0").children(".UV").css("background-color", "green");
-        } else if (data.daily[0].uvi <= 8) {
-          $("#0").children(".UV").css("background-color", "yellow");
-        } else if (data.daily[0].uvi > 8) {
-          $("#0").children(".UV").css("background-color", "red");
-        }
-      }
+      });
+    })
+    .catch(err => {
+      alert(
+        "I just had a huddle with the head of the dev team. You suck at spelling. Try again"
+      );
     });
-  });
 }
 setWeather("Minneapolis");
